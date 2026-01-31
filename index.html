@@ -63,13 +63,17 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             align-items: center;
             color: #fff;
             position: relative;
             padding: 40px;
             background-color: #1a1a1a;
             overflow: hidden;
+        }
+
+        .background-spacer {
+            flex: 1;
+            min-height: 0;
         }
 
         .background::before {
@@ -136,6 +140,7 @@
         }
 
         .footer-contact {
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -328,6 +333,8 @@
                 <img src="background.png" alt="" width="2048" height="1144" loading="eager" decoding="async" class="background-img">
             </picture>
         </div>
+
+        <div class="background-spacer" aria-hidden="true"></div>
         <!-- <div class="glass-panel" aria-hidden="true">
             <img src="logo.svg" alt="Lunar Struct – Structural design and construction consulting" width="125" class="logo" fetchpriority="high">
             <div class="standoff top-left"></div>
@@ -340,6 +347,8 @@
             <h1>Coming Soon</h1>
             <p class="tagline">A new light. A new space.</p>
         </main>
+
+        <div class="background-spacer" aria-hidden="true"></div>
 
         <footer class="footer-contact" role="contentinfo">
             <a href="mailto:lunarstruct@gmail.com" class="btn-contact">Contact</a>
