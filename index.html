@@ -29,6 +29,7 @@
     <meta name="theme-color" content="#1a1a1a">
 
     <link rel="icon" type="image/svg+xml" href="https://lunarstruct.ro/favicon.svg">
+    <link rel="preload" as="image" href="background.webp" type="image/webp">
    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,10 +59,6 @@
         }
 
         .background {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4)), url('./background.png');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
             height: 100%;
             width: 100%;
             display: flex;
@@ -70,7 +67,43 @@
             align-items: center;
             color: #fff;
             position: relative;
-            padding: 40px
+            padding: 40px;
+            background-color: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .background-image-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .background-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 0.7s ease-out;
+        }
+
+        .background-image-wrap img.loaded {
+            opacity: 1;
+        }
+
+        .background .center-content,
+        .background .footer-contact {
+            position: relative;
+            z-index: 2;
         }
 
         .center-content {
@@ -244,10 +277,6 @@
             .tagline {
                 font-size: 1.5rem;
             }
-            .background {
-                background-position: center; 
-            }
-
         }
 
         @keyframes fadeIn {
@@ -293,7 +322,12 @@
 <body>
 
     <div class="background" role="banner">
-        &nbsp;
+        <div class="background-image-wrap" aria-hidden="true">
+            <picture>
+                <source srcset="background.webp" type="image/webp">
+                <img src="background.png" alt="" width="2048" height="1144" loading="eager" decoding="async" class="background-img">
+            </picture>
+        </div>
         <!-- <div class="glass-panel" aria-hidden="true">
             <img src="logo.svg" alt="Lunar Struct – Structural design and construction consulting" width="125" class="logo" fetchpriority="high">
             <div class="standoff top-left"></div>
@@ -328,5 +362,16 @@
         </footer>
     </div>
 
+    <script>
+        (function () {
+            var img = document.querySelector('.background-img');
+            if (img && img.decode) {
+                img.decode().then(function () { img.classList.add('loaded'); }).catch(function () { img.classList.add('loaded'); });
+            } else if (img) {
+                if (img.complete) img.classList.add('loaded');
+                else img.addEventListener('load', function () { img.classList.add('loaded'); });
+            }
+        })();
+    </script>
 </body>
 </html>
